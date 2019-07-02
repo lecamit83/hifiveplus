@@ -5,3 +5,8 @@ let result = Mustache.render("Hello {{first}}", {
 });
 
 console.log(result);
+
+const randomInteger = require('./rand-int');
+
+let rand = randomInteger();
+console.log(rand);
