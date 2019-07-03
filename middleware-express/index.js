@@ -25,14 +25,25 @@ app.use(function(req, res, next){
   console.log('------------------') 
   fs.readFile(pathFile, function(error, data){
     if(error){
-      return next();
+      next(error);
+      return;
     }
-    res.sendFile(pathFile);
+    req.pathFile = pathFile;
+    next();
   });
 });
-// middleware send error
+// middleware log error
+app.use(function(err, req, res, next){
+  console.error("Error: " + err);
+  next(err);
+});
+// middleware send data
 app.use(function(req, res){
-  res.status(404).send("File not found!");
+  res.sendFile(req.pathFile);
+});
+// middleware send error
+app.use(function(err, req, res, next){
+  res.status(500).send("File not found!");
 });
 app.listen(PORT, function(error){
   if(error) throw error;
